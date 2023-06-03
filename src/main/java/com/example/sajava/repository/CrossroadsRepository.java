@@ -19,8 +19,8 @@ public class CrossroadsRepository {
 
     public Data insertCrossroads(CrossroadsModel crossroadsModel) {
         System.out.println("insert crossroads");
-        String sql = "INSERT INTO crossroads(intersection_id, road_id) VALUES(?, ?)";
-        Object[] value = new Object[]{crossroadsModel.getIntersectionId(), crossroadsModel.getRoadId()};
+        String sql = "INSERT INTO crossroads(intersection_id, road_id, is_ns, length) VALUES(?, ?, ?, ?)";
+        Object[] value = new Object[]{crossroadsModel.getIntersectionId(), crossroadsModel.getRoadId(), crossroadsModel.getIsNS(), crossroadsModel.getLength()};
 
         try {
             jdbcTemplate.update(sql, value);
@@ -49,8 +49,8 @@ public class CrossroadsRepository {
 
     public Data selectCrossroads(Map<String, Object> reqBody) {
         System.out.println("search ");
-        final String jsonKey[] = {"intersectionId", "roadId"};
-        final String sqlAttribute[] = {"intersection_id", "road_id"};
+        final String jsonKey[] = {"intersectionId", "roadId, isNS, length"};
+        final String sqlAttribute[] = {"intersection_id", "road_id", "is_ns", "length"};
 
         ArrayList<String> value = new ArrayList<>();
         String sql;

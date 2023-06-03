@@ -16,9 +16,9 @@ public class IntersectionRepository {
 
     public String insertIntersection(IntersectionModel intersectionModel) {
         System.out.println("add intersection");
-        String sql = "INSERT  INTO intersection(road_id, location_x, location_y) VALUES(?, ?, ?)";
+        String sql = "INSERT  INTO intersection(intersection_id, location_x, location_y) VALUES(?, ?, ?)";
         try{
-            jdbcTemplate.update(sql, intersectionModel.getRoadId(), intersectionModel.getLocationX(), intersectionModel.getLocationY());
+            jdbcTemplate.update(sql, intersectionModel.getIntersectionId(), intersectionModel.getLocationX(), intersectionModel.getLocationY());
             return  "insert success";
         }catch (Exception e){
             System.out.println(e);
@@ -27,12 +27,12 @@ public class IntersectionRepository {
 
     }
 
-    public String delIntersection(int roadId){
+    public String delIntersection(String intersectionId){
         System.out.println("delet intersection");
-        String sql = "DELETE FROM intersection WHERE road_id = ?";
+        String sql = "DELETE FROM intersection WHERE intersection_id = ?";
 
         try {
-            jdbcTemplate.update(sql, roadId);
+            jdbcTemplate.update(sql, intersectionId);
             return "delete success";
         }catch (Exception e){
             System.out.println(e);
@@ -45,22 +45,22 @@ public class IntersectionRepository {
         final String sqlAttribute[] = {"location_x", "location_y"};
 
         String sql;
-        int id = (int)reqBody.get("roadId");
+        String id = (String)reqBody.get("intersectionId");
 
         for(int i = 0; i < jsonKey.length; i++){
             String s = jsonKey[i];
             if(reqBody.get(s) != null){
-                sql = "UPDATE intersection SET " + sqlAttribute[i] + " = ? WHERE road_id = ?";
+                sql = "UPDATE intersection SET " + sqlAttribute[i] + " = ? WHERE intersection_id = ?";
                 jdbcTemplate.update(sql, reqBody.get(s), id);
             }
         }
 
-        return jdbcTemplate.queryForMap("SELECT * FROM intersection WHERE road_id = ?", id);
+        return jdbcTemplate.queryForMap("SELECT * FROM intersection WHERE intersection_id = ?", id);
     }
 
-    public Map<String, Object> selectIntersection(int id){
+    public Map<String, Object> selectIntersection(String id){
         System.out.println("search intersection");
-        String sql = "SELECT * FROM intersection WHERE road_id = ?";
+        String sql = "SELECT * FROM intersection WHERE intersection_id = ?";
         return jdbcTemplate.queryForMap(sql, id);
     }
     public List<Map<String, Object>> selectAllIntersection() {

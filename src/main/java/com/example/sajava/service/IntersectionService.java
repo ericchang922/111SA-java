@@ -17,15 +17,15 @@ public class IntersectionService {
         return intersectionRepository.insertIntersection(intersectionModel);
     }
 
-    public String del(int roadId){
-        return intersectionRepository.delIntersection(roadId);
+    public String del(String intersection_id){
+        return intersectionRepository.delIntersection(intersection_id);
     }
 
     public Map<String, Object> update(Map<String, Object> reqBody){
         return intersectionRepository.updateIntersection(reqBody);
     }
 
-    public Map<String, Object> search(int id) {
+    public Map<String, Object> search(String id) {
         return intersectionRepository.selectIntersection(id);
     }
 

@@ -31,7 +31,7 @@ public class IntersectionController {
 
     @PostMapping("del")
     public ResponseEntity<Map<String, Object>> del(@RequestBody Map<String, Object> reqBody){
-        data = new Data(200, intersectionService.del((Integer) reqBody.get("roadId")));
+        data = new Data(200, intersectionService.del((String) reqBody.get("intersectionId")));
 
         return data.getResponse();
     }
@@ -44,7 +44,7 @@ public class IntersectionController {
     }
 
     @GetMapping("search")
-    public ResponseEntity<Map<String, Object>> search(@RequestParam int id){
+    public ResponseEntity<Map<String, Object>> search(@RequestParam String id){
         data = new Data(200, intersectionService.search(id));
 
         return data.getResponse();

@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class IntersectionModel {
     @Id
-    private int roadId;
+    private String intersectionId;
     private double locationX;
     private double locationY;
 
-    public int getRoadId() {
-        return roadId;
+    public String getIntersectionId() {
+        return intersectionId;
     }
     public double getLocationX() {
         return locationX;
@@ -20,8 +20,8 @@ public class IntersectionModel {
         return locationY;
     }
 
-    public void setRoadId(int roadId) {
-        this.roadId = roadId;
+    public void setIntersectionId(String intersectionId) {
+        this.intersectionId = intersectionId;
     }
     public void setLocationX(double locationX) {
         this.locationX = locationX;

@@ -1,5 +1,6 @@
 package com.example.sajava.repository;
 
+import com.example.sajava.Data;
 import com.example.sajava.model.IntersectionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +15,9 @@ public class IntersectionRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public String insertIntersection(IntersectionModel intersectionModel) {
+    Data data;
+
+    public Data insertIntersection(IntersectionModel intersectionModel) {
         System.out.println("add intersection");
         String sql = "INSERT  INTO intersection(intersection_id, location_x, location_y) VALUES(?, ?, ?)";
         try{
@@ -40,14 +43,15 @@ public class IntersectionRepository {
         }
     }
 
-    public Map<String, Object> updateIntersection(Map<String, Object> reqBody){
+    public Data updateIntersection(Map<String, Object> reqBody) {
+        System.out.println("update intersection");
         final String jsonKey[] = {"locationX", "locationY"};
         final String sqlAttribute[] = {"location_x", "location_y"};
 
         String sql;
         String id = (String)reqBody.get("intersectionId");
 
-        for(int i = 0; i < jsonKey.length; i++){
+        for (int i = 0; i < jsonKey.length; i++) {
             String s = jsonKey[i];
             if(reqBody.get(s) != null){
                 sql = "UPDATE intersection SET " + sqlAttribute[i] + " = ? WHERE intersection_id = ?";
@@ -63,10 +67,13 @@ public class IntersectionRepository {
         String sql = "SELECT * FROM intersection WHERE intersection_id = ?";
         return jdbcTemplate.queryForMap(sql, id);
     }
-    public List<Map<String, Object>> selectAllIntersection() {
+
+    public Data selectAllIntersection() {
         System.out.println("all intersection");
 
-        return jdbcTemplate.queryForList("SELECT * FROM intersection");
+        data = new Data(200, jdbcTemplate.queryForList("SELECT * FROM intersection"));
+
+        return data;
     }
 
 }

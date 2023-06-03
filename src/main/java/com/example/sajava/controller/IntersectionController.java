@@ -24,7 +24,7 @@ public class IntersectionController {
 
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody IntersectionModel intModel){
-        data = new Data(200, intersectionService.add(intModel));
+        data = intersectionService.add(intModel);
 
         return data.getResponse();
     }
@@ -38,7 +38,7 @@ public class IntersectionController {
 
     @PostMapping("update")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Map<String, Object> reqBody){
-        data = new Data(200, intersectionService.update(reqBody));
+        data = intersectionService.update(reqBody);
 
         return data.getResponse();
     }
@@ -52,7 +52,7 @@ public class IntersectionController {
 
     @GetMapping("all")
     public ResponseEntity<Map<String, Object>> all(){
-        data = new Data(200, intersectionService.all());
+        data = intersectionService.all();
 
         return data.getResponse();
     }

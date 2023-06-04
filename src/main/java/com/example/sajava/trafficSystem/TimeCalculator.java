@@ -46,7 +46,8 @@ public class TimeCalculator {
         carNumberRequest.put("roadId", roadId);
         int carNum = (int)((Map<String, Object>)(identifyTraffic.carNumber(carNumberRequest).getResult())).get("carno");
 
-        lightTime = (10 * (c - 1)) + ((4.0 * carNum) / c) + 2.0;
+        lightTime = calculate(carNum, c);
+
         if(lightTime >= upperValue) lightTime = upperValue;
         else if (lightTime <= lowerValue) lightTime = lowerValue;
         else lightTime = Math.round(lightTime);
@@ -78,7 +79,7 @@ public class TimeCalculator {
 
         double c = cArray[laneIndex];
 
-        lightTime = (10 * (c - 1)) + ((4.0 * carNum) / c) + 2.0;
+        lightTime = calculate(carNum, c);
 
         if(lightTime >= upperValue) lightTime = upperValue;
         else if (lightTime <= lowerValue) lightTime = lowerValue;
@@ -89,6 +90,10 @@ public class TimeCalculator {
         response.put("lightTime", lightTime);
         data = new Data(200, response);
         return data.getResponse();
+    }
+
+    private double calculate(int carNum, double c){
+        return (10 * (c - 1)) + ((4.0 * carNum) / c) + 2.0;
     }
 
 }

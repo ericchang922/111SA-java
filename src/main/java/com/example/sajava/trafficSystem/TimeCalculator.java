@@ -18,9 +18,9 @@ import java.util.Map;
 public class TimeCalculator {
     final String[] lane = {"L01", "L02", "L03", "L04"};
     final List<String> laneList = Arrays.stream(lane).toList();
-    final int[] cArray = {110, 70, 40, 30};
-    final int[] upperArray = {130, 90, 60, 50};
-    final int[] lowerArray = {90, 50, 20, 10};
+    final double[] cArray = {4.0, 3.0, 2.0, 1.0};
+    final int[] upperArray = {90, 70, 60, 50};
+    final int[] lowerArray = {50, 40, 20, 10};
 
     @Autowired
     TimeRequest timeRequest;
@@ -33,24 +33,23 @@ public class TimeCalculator {
         Map<String, Object> roadInfo = calculatorService.roadInfo(tRequest);
         IdentifyTraffic identifyTraffic = new IdentifyTraffic();
 
-        int lightTime = 0;
+        double lightTime = 0;
         String laneId = (String) roadInfo.get("laneId");
         String roadId = (String)roadInfo.get("roadId");
-        int roadLength = (int)roadInfo.get("roadLength");
         int laneIndex = laneList.indexOf(laneId);
         int upperValue = upperArray[laneIndex];
         int lowerValue = lowerArray[laneIndex];
 
-        int c = cArray[laneIndex];
+        double c = cArray[laneIndex];
 
         Map<String, Object> carNumberRequest = new LinkedHashMap<>();
         carNumberRequest.put("roadId", roadId);
         int carNum = (int)((Map<String, Object>)(identifyTraffic.carNumber(carNumberRequest).getResult())).get("carno");
 
-        lightTime = (int)Math.round(((((double) carNum * (double) carNum) * (double) c) + (15.0 * (double) carNum)) / (500 * (double)roadLength));
-
+        lightTime = (10 * (c - 1)) + ((4.0 * carNum) / c) + 2.0;
         if(lightTime >= upperValue) lightTime = upperValue;
         else if (lightTime <= lowerValue) lightTime = lowerValue;
+        else lightTime = Math.round(lightTime);
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("trafficFlow", carNum);
@@ -69,28 +68,21 @@ public class TimeCalculator {
         tRequest.setIntersectionId(intersectionId);
         tRequest.setIsNS(isNS);
 
-
         Map<String, Object> roadInfo = calculatorService.roadInfo(tRequest);
-        IdentifyTraffic identifyTraffic = new IdentifyTraffic();
 
         double lightTime = 0;
         String laneId = (String) roadInfo.get("laneId");
-        String roadId = (String)roadInfo.get("roadId");
-        int roadLength = (int)roadInfo.get("roadLength");
         int laneIndex = laneList.indexOf(laneId);
         int upperValue = upperArray[laneIndex];
         int lowerValue = lowerArray[laneIndex];
 
-        int c = cArray[laneIndex];
+        double c = cArray[laneIndex];
 
-        lightTime = c * (carNum / (roadLength));
-        System.out.println(c);
-        System.out.println(carNum);
-        System.out.println(roadLength);
-        System.out.println(lightTime);
+        lightTime = (10 * (c - 1)) + ((4.0 * carNum) / c) + 2.0;
 
         if(lightTime >= upperValue) lightTime = upperValue;
         else if (lightTime <= lowerValue) lightTime = lowerValue;
+        else lightTime = Math.round(lightTime);
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("trafficFlow", carNum);

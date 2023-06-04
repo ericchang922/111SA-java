@@ -19,8 +19,6 @@ public class CalculatorService {
         String laneId = "";
         int roadLength = 0;
 
-        System.out.println(crossList);
-
         for(int i = 0; i < 2; i++){
             Map<String, Object> thisCross = crossList.get(i);
             if(timeRequest.getIsNS() == ((int)thisCross.get("is_ns"))){
